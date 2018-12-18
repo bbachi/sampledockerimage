@@ -5,24 +5,32 @@ ENV MONGO_URL=mongodb://mongo:27017/todos
 ENV ROOT_URL=http://localhost
 ENV PORT=3000
 
-WORKDIR /usr/app
-
 RUN apt-get install -y curl
 RUN apt-get update
 RUN apt-get install -y --no-install-recommends bsdtar
 RUN export tar='bsdtar'
+RUN apt-get install sudo -y
 RUN curl https://install.meteor.com/ | /bin/sh
+
+RUN useradd meteoruser
+RUN mkdir -p /home/meteoruser
+RUN chown meteoruser /home/meteoruser
+USER meteoruser
+WORKDIR /home/meteoruser
 
 RUN git clone https://github.com/bbachi/sampledockerimage.git
 
 RUN echo 'git clone completed'
+#RUN sudo chown -Rh meteoruser ./sampledockerimage
 
+#RUN chown -R meteoruser /usr/app/*
 RUN cd sampledockerimage\
     && meteor npm install\
     && pwd\
-    && ls -l\
-    && chown -R root:root /usr/app\
-    && meteor build --allow-superuser --directory output\
+    && ls -a\
+    && /usr/local/bin/meteor --allow-superuser --help\
+    && ls -la\
+    && /usr/local/bin/meteor build --directory output\
     && cd output/bundle/programs/server\
     && npm install -- production
 
