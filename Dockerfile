@@ -7,21 +7,27 @@ ENV PORT=3000
 
 WORKDIR /usr/app
 
-RUN curl https://install.meteor.com/ | sh
+RUN apt-get install -y curl
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends bsdtar
+RUN export tar='bsdtar'
+RUN curl https://install.meteor.com/ | /bin/sh
 
-git 
+RUN git clone https://github.com/bbachi/sampledockerimage.git
 
-RUN echo 'Setting the work directory to /usr/app'
+RUN echo 'git clone completed'
 
+RUN cd sampledockerimage\
+    && meteor npm install\
+    && pwd\
+    && ls -l\
+    && chown -R root:root /usr/app\
+    && meteor build --allow-superuser --directory output\
+    && cd output/bundle/programs/server\
+    && npm install -- production
 
-RUN echo 'Copying everything to work direcory'
-COPY ./output ./
-
-RUN echo 'installing dependencies'
-RUN cd bundle/programs/server
-RUN npm install -- production
 
 RUN echo $MONGO_URL
 
 
-CMD ["node","bundle/main.js"]
+CMD ["node","output/bundle/main.js"]
