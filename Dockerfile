@@ -21,9 +21,7 @@ WORKDIR /home/meteoruser
 RUN git clone https://github.com/bbachi/sampledockerimage.git
 
 RUN echo 'git clone completed'
-#RUN sudo chown -Rh meteoruser ./sampledockerimage
 
-#RUN chown -R meteoruser /usr/app/*
 RUN cd sampledockerimage\
     && meteor npm install\
     && /usr/local/bin/meteor build --directory output\
