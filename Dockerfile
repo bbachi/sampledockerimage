@@ -26,16 +26,12 @@ RUN echo 'git clone completed'
 #RUN chown -R meteoruser /usr/app/*
 RUN cd sampledockerimage\
     && meteor npm install\
-    && pwd\
-    && ls -a\
-    && /usr/local/bin/meteor --allow-superuser --help\
-    && ls -la\
     && /usr/local/bin/meteor build --directory output\
     && cd output/bundle/programs/server\
-    && npm install -- production
+    && npm install --production
 
 
 RUN echo $MONGO_URL
 
 
-CMD ["node","output/bundle/main.js"]
+CMD ["node","sampledockerimage/output/bundle/main.js"]
