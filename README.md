@@ -11,12 +11,10 @@ This is just sample docker image
   
 #### How to pass arguments building docker file
 
-  Docker file
+ Docker file
   
-  `
-    FROM node:8
-    ARG VERSION=0
-  `
-  command line argument while builing
+  `ARG VERSION=0`
+  
+ command line argument while builing
   
   `docker build --build-arg VERSION=0.1 -t <tag-name> .`
